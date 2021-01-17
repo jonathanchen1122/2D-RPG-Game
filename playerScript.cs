@@ -26,7 +26,6 @@ public class playerScript : MonoBehaviour
     {
 
         //jumping
-
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, groundLayer);
 
         if ( isGrounded == true) {
@@ -39,7 +38,6 @@ public class playerScript : MonoBehaviour
          }
 
         // Long Jumping
-
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
             if (isJumping == true)
             {

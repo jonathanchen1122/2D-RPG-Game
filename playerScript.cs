@@ -86,7 +86,7 @@ public class playerScript : MonoBehaviour
             health += 1;
         }
 
-        if (health > 0 && Input.GetKeyDown(KeyCode.L))
+        if (health >= 1 && Input.GetKeyDown(KeyCode.L))
         {
             health -= 1;
         }
@@ -144,6 +144,15 @@ public class playerScript : MonoBehaviour
             {
                 hearts[i].enabled = false;
             }
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("enemy") && health >= 1)
+        {
+            health -= 1;
         }
     }
 }

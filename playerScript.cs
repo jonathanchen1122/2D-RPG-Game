@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class playerScript : MonoBehaviour
 {
@@ -22,10 +23,19 @@ public class playerScript : MonoBehaviour
 
     private bool isJumping;
 
+
+
+    public int health;
+    public int maxHealth;
+
+    public Image[] hearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+
     void Update()
     {
-
         //jumping
+
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, groundLayer);
 
         if ( isGrounded == true) {
@@ -38,6 +48,7 @@ public class playerScript : MonoBehaviour
          }
 
         // Long Jumping
+
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
             if (isJumping == true)
             {
@@ -69,10 +80,23 @@ public class playerScript : MonoBehaviour
         {
             flip();
         }
+
+        if (health < maxHealth && Input.GetKeyDown(KeyCode.P))
+        {
+            health += 1;
+        }
+
+        if (health > 0 && Input.GetKeyDown(KeyCode.L))
+        {
+            health -= 1;
+        }
     }
 
     void FixedUpdate()
     {
+        heartMethod();
+
+
         // left Right movement
         moveInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(moveInput*speed,rb.velocity.y);
@@ -86,5 +110,40 @@ public class playerScript : MonoBehaviour
         Vector2 scaler = transform.localScale;
         scaler.x *= -1;
         transform.localScale = scaler;
+    }
+
+    void heartMethod()
+    {
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+
+        // hearts
+
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            // actual current health
+            if (i < health)
+            {
+                hearts[i].sprite = fullHeart;
+            }
+
+            else
+            {
+                hearts[i].sprite = emptyHeart;
+            }
+
+            // max health monitoring
+            if (i < maxHealth)
+            {
+                hearts[i].enabled = true;
+            }
+
+            else
+            {
+                hearts[i].enabled = false;
+            }
+        }
     }
 }

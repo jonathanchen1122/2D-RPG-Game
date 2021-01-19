@@ -11,6 +11,8 @@ public class playerMeleeScript : MonoBehaviour
     public float attackRange;
     public LayerMask enemy;
 
+    public int attackAmount;
+
     void Start()
     {
         attackDuration = attackTime;
@@ -24,7 +26,7 @@ public class playerMeleeScript : MonoBehaviour
             Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, enemy);
 
             for (int i = 0; i < enemies.Length; i++) {
-                //attack enemies
+                enemies[i].GetComponent<enemyHealthScript>().damage(attackAmount);
             }
 
             attackDuration = attackTime;
@@ -32,5 +34,11 @@ public class playerMeleeScript : MonoBehaviour
         else {
             attackDuration -= Time.deltaTime;
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(attackPos.position,attackRange);
     }
 }

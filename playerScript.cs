@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Animations;
 
 public class playerScript : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class playerScript : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
+    public Animator playerAnim;
+
     void Update()
     {
         //jumping
@@ -39,6 +42,7 @@ public class playerScript : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, groundLayer);
 
         if ( isGrounded == true) {
+            playerAnim.SetBool("isJump", false);
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 isJumping = true;
@@ -68,7 +72,6 @@ public class playerScript : MonoBehaviour
         {
             isJumping = false;
         }
-
 
         //flipping
         if (facingRight == true && moveInput < 0) // facing Right going Left
@@ -100,6 +103,23 @@ public class playerScript : MonoBehaviour
         // left Right movement
         moveInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(moveInput*speed,rb.velocity.y);
+
+
+        if (moveInput != 0)
+        {
+            playerAnim.SetBool("isRunning", true);
+        }
+
+        if (moveInput == 0)
+        {
+            playerAnim.SetBool("isRunning", false);
+        }
+
+        if (isGrounded == false)
+        {
+            playerAnim.SetBool("isJump", true);
+            playerAnim.SetBool("isRunning", false);
+        }
     }
 
 

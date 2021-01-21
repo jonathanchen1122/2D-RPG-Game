@@ -42,15 +42,22 @@ public class playerScript : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, groundLayer);
 
         if ( isGrounded == true) {
-            playerAnim.SetBool("isJump", false);
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
+                playerAnim.SetTrigger("TakeOff");
                 isJumping = true;
                 jumpTimeCounter = jumpTime;
                 rb.velocity = Vector2.up * jumpForce;
             }
          }
 
+        if (isGrounded == false) {
+            playerAnim.SetBool("isJump", true);
+        }
+
+        if (isGrounded == true) {
+            playerAnim.SetBool("isJump", false);
+        }
         // Long Jumping
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
@@ -105,20 +112,13 @@ public class playerScript : MonoBehaviour
         rb.velocity = new Vector2(moveInput*speed,rb.velocity.y);
 
 
-        if (moveInput != 0)
-        {
-            playerAnim.SetBool("isRunning", true);
-        }
-
         if (moveInput == 0)
         {
             playerAnim.SetBool("isRunning", false);
         }
 
-        if (isGrounded == false)
-        {
-            playerAnim.SetBool("isJump", true);
-            playerAnim.SetBool("isRunning", false);
+        else {
+            playerAnim.SetBool("isRunning", true);
         }
     }
 
